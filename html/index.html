@@ -22,8 +22,10 @@
 
     <h2>Historique des mauvaises blagues</h2>
     <input type="text" ng-model="jokefilter">
+    <button class="btn btn-link" ng-click="order('score')">Ordonner par score</button>
+    <button class="btn btn-link" ng-click="order('date')">Ordonner par date</button>
     <p>{{(jokes | filter:jokefilter).length }} blagues</p>
-    <div ng-repeat="joke in jokes | filter:jokefilter" ng-controller="jokeController">
+    <div ng-repeat="joke in jokes | filter:jokefilter | orderBy : predicate : reverse" ng-controller="jokeController">
         <p><strong>{{joke.date | date : 'short'}}</strong> {{joke.txt}}</p>
 
         <span ng-if="joke.score != undefined && joke.score >0">+ {{joke.score}}</span>
