@@ -1,13 +1,10 @@
-var app = angular.module("monapp", ['LocalStorageModule']);
+var app = angular.module("monapp", []);
 
-app.config(function (localStorageServiceProvider) {
-    localStorageServiceProvider
-        .setPrefix('yourAppName')
-        .setStorageType('sessionStorage');
+app.config(function () {
+
 });
 
-app.run(function(localStorageService){
-    localStorageService.set("truc", "machin");
+app.run(function(){
 
 });
 
