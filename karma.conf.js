@@ -10,7 +10,7 @@ module.exports = function (config) {
             'main.controller.js',
             'joke.controller.js',
             'joke.service.js',
-            'controller.spec.js'
+            'main.controller.spec.js'
         ],
 
         autoWatch: true,

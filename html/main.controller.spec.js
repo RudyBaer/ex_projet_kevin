@@ -1,13 +1,23 @@
 'use strict';
 
-describe('controller tests', function () {
+describe('main controller tests', function () {
 
     beforeEach(module('monapp'));
 
-    var $controller, $httpBackend;
+    var $controller;
+    var mockedJokes = [{
+        txt: 'msg'
+    }];
 
-    beforeEach(inject(function (_$controller_) {
+    beforeEach(inject(function (_$controller_, jokeService) {
         $controller = _$controller_;
+        spyOn(jokeService, 'getJokes').and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback(mockedJokes);
+                }
+            };
+        });
     }));
 
     it('should create init name with "kevin"', function () {
@@ -15,5 +25,13 @@ describe('controller tests', function () {
 
         expect(ctrl.name).toBe("Kevin");
     });
+
+    it('should load jokes', function() {
+        var ctrl = $controller('MainController', {});
+
+        expect(ctrl.jokes.length).toBe(1);
+        expect(ctrl.jokes[0].txt).toBe('msg');
+
+    })
 
 });
