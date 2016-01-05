@@ -13,9 +13,16 @@ app.run(function(localStorageService){
 
 app.controller("main", function ($scope) {
         $scope.name = "Kevin";
+        $scope.jokes= [];
 
         $scope.addJoke = function (joke) {
             console.log(joke);
+            $scope.joke = "";
+
+            var j = {};
+            j.txt = joke;
+            j.date = new Date();
+            $scope.jokes.push(j);
             $scope.joke = "";
         }
 

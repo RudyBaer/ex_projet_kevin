@@ -19,6 +19,12 @@
 
         </div>
     </form>
+
+    <h2>Historique des mauvaises blagues</h2>
+    <div ng-repeat="joke in jokes">
+        <p><strong>{{joke.date}}</strong> {{joke.txt}}</p>
+    </div>
+
 </div>
 </body>
 </html>
