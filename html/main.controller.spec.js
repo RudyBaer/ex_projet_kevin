@@ -11,10 +11,9 @@ describe('controller tests', function () {
     }));
 
     it('should create init name with "kevin"', function () {
-        var $scope = {};
-        var ctrl = $controller('main', {$scope: $scope, $httpBackend: $httpBackend});
+        var ctrl = $controller('MainController', {});
 
-        expect($scope.name).toBe("Kevin");
+        expect(ctrl.name).toBe("Kevin");
     });
 
 });
