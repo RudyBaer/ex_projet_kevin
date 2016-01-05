@@ -6,32 +6,35 @@
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="index.js"></script>
+    <script src="kevin.module.js"></script>
+    <script src="main.controller.js"></script>
+    <script src="joke.controller.js"></script>
+    <script src="joke.service.js"></script>
 </head>
 <body ng-app="monapp">
-<div class="container" ng-controller="main">
-    <h1>{{name}} a fait {{ 1 + 8 }} mauvaises blagues</h1>
+<div class="container" ng-controller="MainController as main">
+    <h1>{{main.name}} a fait {{ 1 + 8 }} mauvaises blagues</h1>
 
     <form>
         <div class="form-group">
-            <label>La blague</label><textarea cols="100" rows="3" type="text" ng-model="joke" class="form-control"></textarea>
-            <button class="btn btn-success" ng-click="addJoke(joke)">Ajouter la mauvaise blague</button>
+            <label>La blague</label><textarea cols="100" rows="3" type="text" ng-model="main.joke" class="form-control"></textarea>
+            <button class="btn btn-success" ng-click="main.addJoke(main.joke)">Ajouter la mauvaise blague</button>
 
         </div>
     </form>
 
     <h2>Historique des mauvaises blagues</h2>
     <input type="text" ng-model="jokefilter">
-    <button class="btn btn-link" ng-click="order('score')">Ordonner par score</button>
-    <button class="btn btn-link" ng-click="order('date')">Ordonner par date</button>
-    <p>{{(jokes | filter:jokefilter).length }} blagues</p>
-    <div ng-repeat="joke in jokes | filter:jokefilter | orderBy : predicate : reverse" ng-controller="jokeController">
+    <button class="btn btn-link" ng-click="main.order('score')">Ordonner par score</button>
+    <button class="btn btn-link" ng-click="main.order('date')">Ordonner par date</button>
+    <p>{{(main.jokes | filter:jokefilter).length }} blagues</p>
+    <div ng-repeat="joke in main.jokes | filter:jokefilter | orderBy : main.predicate : main.reverse" ng-controller="JokeController as jokeCtrl">
         <p><strong>{{joke.date | date : 'short'}}</strong> {{joke.txt}}</p>
 
         <span ng-if="joke.score != undefined && joke.score >0">+ {{joke.score}}</span>
-        <button class="btn glyphicon glyphicon-thumbs-up" ng-click="plusOne(joke)"></button>
-        <button class="btn glyphicon glyphicon-star" ng-if="joke.favorite==true" ng-click="removeFavorite(joke)"></button>
-        <button class="btn glyphicon glyphicon-star-empty" ng-if="!joke.favorite==true" ng-click="addFavorite(joke)"></button>
+        <button class="btn glyphicon glyphicon-thumbs-up" ng-click="jokeCtrl.plusOne(joke)"></button>
+        <button class="btn glyphicon glyphicon-star" ng-if="joke.favorite==true" ng-click="jokeCtrl.removeFavorite(joke)"></button>
+        <button class="btn glyphicon glyphicon-star-empty" ng-if="!joke.favorite==true" ng-click="jokeCtrl.addFavorite(joke)"></button>
     </div>
 
 </div>
