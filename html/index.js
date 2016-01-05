@@ -11,34 +11,23 @@ app.run(function(localStorageService){
 
 });
 
-app.controller("main", ['$scope', '$http', function ($scope, $http) {
+app.controller("main", ['$scope',  'jokeService', function ($scope, jokeService) {
         $scope.name = "Kevin";
         $scope.jokes= [];
 
-        $http.get('api/joke')
-            .success(function (data) {
-                $scope.jokes = data;
-            }).
-            error(function (data, status, headers, config) {
-                console.log(data);
-            });
+        jokeService.getJokes().then(function (data) {
+            $scope.jokes = data;
+        });
 
         $scope.addJoke = function (joke) {
-            console.log(joke);
-            $scope.joke = "";
-
-            var j = {};
-            j.txt = joke;
-            j.date = new Date();
-            $http.post('api/joke', j)
-                .success(function (data) {
-                    $scope.jokes.push(j);
-                    $scope.joke = "";
-                }).
-                error(function (data, status, headers, config) {
-                    console.log(data);
-                });
-        }
+            jokeService.addJoke(joke).then(function () {
+                var j = {};
+                j.txt = joke;
+                j.date = new Date();
+                $scope.jokes.push(j);
+                $scope.joke = "";
+                })
+        };
 
         $scope.predicate = '';
         $scope.reverse = false;
@@ -82,5 +71,42 @@ app.controller("jokeController", ['$scope', '$http', function ($scope, $http) {
                 });
         }
 
+    }]
+);
+
+app.factory("jokeService", ['$http', '$q', function ($http, $q) {
+        var jokeService = {};
+        jokeService.getJokes = function () {
+            var defer = $q.defer();
+            $http.get('api/joke')
+                .success(function (data) {
+
+                    defer.resolve(data);
+                }).
+                error(function (data, status, headers, config) {
+                    console.log(data);
+                });
+            return defer.promise;
+        };
+
+        jokeService.addJoke = function (joke) {
+            var defer = $q.defer();
+            console.log(joke);
+
+            var j = {};
+            j.txt = joke;
+            j.date = new Date();
+            $http.post('api/joke', j)
+                .success(function (data) {
+                    defer.resolve();
+                }).
+                error(function (data, status, headers, config) {
+                    defer.reject()
+                    console.log(data);
+                });
+            return defer.promise;
+        }
+
+        return jokeService;
     }]
 );
